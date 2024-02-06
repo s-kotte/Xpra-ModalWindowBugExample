@@ -12,9 +12,6 @@ RUN apt-get update && \
     
 
 RUN apt-get update && \
-    apt-get install -y --install-recommends winehq-stable
-
-RUN apt-get update && \
     apt-get install -y \
     xvfb \
     python3-pip \
@@ -22,7 +19,7 @@ RUN apt-get update && \
     x11-apps \
     x11-xserver-utils
 
-
+RUN apt-get install -y --install-recommends winehq-stable=9.0.0.0~jammy-1
 RUN apt-get install -y xpra=5.0.5-r0-1 && \
     apt-get clean
 
@@ -36,7 +33,7 @@ RUN wget -P /mono https://dl.winehq.org/wine/wine-mono/9.0.0/wine-mono-9.0.0-x86
 COPY ./WindowsFormsApp2.exe /home/xpra-test/program/WindowsFormsApp2.exe
 COPY ./run.sh /home/xpra-test/run.sh
 RUN chmod +x /home/xpra-test/run.sh && \
-    chown -R xpra-test:xpra-test /home/xpra-test/program \
+    chown -R xpra-test:xpra-test /home/xpra-test/program
     
 USER xpra-test
 

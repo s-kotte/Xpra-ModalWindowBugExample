@@ -1,0 +1,9 @@
+﻿version: '3.8'
+
+services:
+  xpra-container:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8085:8085

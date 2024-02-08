@@ -11,17 +11,45 @@ RUN apt-get update && \
     wget -O /etc/apt/sources.list.d/xpra.sources https://xpra.org/repos/jammy/xpra.sources
     
 
-RUN apt-get update && \
-    apt-get install -y \
-    xvfb \
-    python3-pip \
-    libx11-dev \
-    x11-apps \
-    x11-xserver-utils
+RUN apt-get update && apt-get install -y --install-recommends winehq-stable=9.0.0.0~jammy-1
 
-RUN apt-get install -y --install-recommends winehq-stable=9.0.0.0~jammy-1
-RUN apt-get install -y xpra=5.0.5-r0-1 && \
-    apt-get clean
+RUN apt-get install -y \
+    python3-pip git \
+    devscripts build-essential lintian debhelper pandoc \
+    pkgconf libx11-dev libxtst-dev libxcomposite-dev libxdamage-dev libxres-dev \
+    libxkbfile-dev python-all-dev pandoc libsystemd-dev \
+    libgtk-3-dev python3-dev python3-cairo-dev python-gi-dev \
+    xauth x11-xkb-utils \
+    xvfb python3-gi-cairo \
+    libturbojpeg-dev libwebp-dev python3-pil \
+    libx264-dev libvpx-dev \
+    python3-dbus python3-cryptography \
+    python3-netifaces \
+    openssh-client sshpass python3-paramiko \
+    python3-setproctitle python3-xdg python3-pyinotify \
+    libpam-dev xserver-xorg-dev xutils-dev xserver-xorg-video-dummy keyboard-configuration \
+    python3-kerberos python3-gssapi \
+    python3-gst-1.0 \
+    gstreamer1.0-pulseaudio gstreamer1.0-alsa \
+    gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
+    gstreamer1.0-plugins-ugly gstreamer1.0-plugins-bad gstreamer1.0-vaapi \
+    liblz4-dev python3-lz4 \
+    libbrotli-dev \
+    libxxhash-dev \
+    python3-coverage \
+    x11-xserver-utils dbus-x11 
+
+RUN pip3 install Cython
+
+RUN git clone https://github.com/Xpra-org/xpra && \
+    cd xpra && \
+    python3 ./setup.py install --prefix=/usr --install-layout=deb 
+
+RUN git clone https://github.com/Xpra-org/xpra-html5 && \
+    cd xpra-html5 && \
+    ./setup.py install
+#RUN apt-get install -y xpra=5.0.5-r0-1 && \
+#    apt-get clean
 
 RUN useradd -ms /bin/bash xpra-test
 
